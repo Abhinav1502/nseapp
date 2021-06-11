@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title></title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<style>
+table {
+          font-size: 10px;
+}
+td,th{
+  text-align: center;
+
+}
+th{
+  color: white;
+}
+* {
+  box-sizing: border-box;
+}
+    .row {
+      display: flex;
+    }
+    #kk{
+      margin-left: 5%;
+    }
+
+    /* Create two equal columns that sits next to each other */
+
+</style>
+<script type="text/javascript">
+function fetchdata(){
+$.ajax({
+url: '/get_nsedata',
+type: 'GET',
+success: function(data){
+  console.log("Success");
+},
+complete:function(data){
+ setTimeout(fetchdata,10000);
+}
+});
+}
+$(document).ready(function(){
+ setTimeout(fetchdata,10000);
+});
+</script>
+  </head>
+  <body>
+    <h2>NSE Option Chain </h2>
+    <h4 id="satus" style="color:Green">Last Updated {{t}}</h4>
+
+    <div class="row">
+      <div class="column" style="width:50%">
+        <table class="table-bordered" id="kk" style="width:95%">
+      <thead>
+        <tr style="background-color:blue">
+          <td colspan="14" style="color:white"><b>CALLS<b></td>
+        </tr>
+        <tr style="background-color:blue">
+          <th title="ExpiryDate" scope="col">ED</th>
+          <th scope="col" title="underlying">UL</th>
+          <!-- <th scope="col" title="identifier">ID</th> -->
+          <th scope="col" title="openInterest">OI</th>
+          <th scope="col" title="changeinOpenInterest">COI</th>
+          <th scope="col"title="pchangeinOpenInterest">PCOI</th>
+          <th scope="col" title="totalTradedVolume">TTV</th>
+          <th scope="col"title="impliedVolatility">IV</th>
+          <th scope="col" title="totalSellQuantity">TSQ</th>
+          <th scope="col" title="bidQty">BQ</th>
+          <th scope="col" title="bidprice">BP</th>
+          <th scope="col" title="askQty">AQ</th>
+          <th scope="col" title="askPrice">AP</th>
+          <th scope="col" title="underlyingValue">ULV</th>
+          <th scope="col" title="strikePrice">strikePrice</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in tableCE %}
+        <tr>
+          <td> {{ row.expiryDate }}</td>
+          <td>{{row.underlying}}</td>
+          <!-- <td>{{row.identifier}}</td> -->
+          <td>{{row.openInterest}}</td>
+          <td>{{row.changeinOpenInterest}}</td>
+          <td>{{row.pchangeinOpenInterest}}</td>
+          <td>{{row.totalTradedVolume}}</td>
+          <td>{{row.impliedVolatility}}</td>
+          <td>{{row.totalSellQuantity}}</td>
+          <td>{{row.bidQty}}</td>
+          <td>{{row.bidprice}}</td>
+          <td>{{row.askQty}}</td>
+          <td>{{row.askPrice}}</td>
+          <td>{{row.underlyingValue}}</td>
+          <td>{{row.strikePrice}} </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+      </div>
+      <div class="column" style="width:50%;margin-left:0px" >
+        <table class="table-bordered" style="margin-left:0px">
+      <thead>
+        <tr style="background-color:blue">
+          <td colspan="11" style="color:white" ><b>PUTS<b></td>
+        </tr>
+        <tr style="background-color:blue">
+            <th scope="col" title="underlyingValue">ULV</th>
+          <th scope="col" title="askPrice">AP</th>
+          <th scope="col" title="askQty">AQ</th>
+            <th scope="col" title="bidprice">BP</th>
+          <th scope="col" title="bidQty">BQ</th>
+          <th scope="col" title="totalSellQuantity">TSQ</th>
+          <th scope="col"title="impliedVolatility">IV</th>
+          <th scope="col" title="totalTradedVolume">TTV</th>
+          <th scope="col"title="pchangeinOpenInterest">PCOI</th>
+          <th scope="col" title="changeinOpenInterest">COI</th>
+          <th scope="col" title="openInterest">OI</th>
+
+        </tr>
+      </thead>
+      <tbody>
+       {% for row in tablePE %}
+       <tr>
+        <td >{{row.underlyingValue}}</td>
+        <td >{{row.askPrice}}</td>
+        <td >{{row.askQty}}</td>
+        <td >{{row.bidprice}}</td>
+        <td >{{row.bidQty}}</td>
+        <td >{{row.totalSellQuantity}}</td>
+        <td >{{row.impliedVolatility}}</td>
+        <td >{{row.totalTradedVolume}}</td>
+        <td >{{row.pchangeinOpenInterest}}</td>
+        <td >{{row.changeinOpenInterest}}</td>
+        <td >{{row.openInterest}}</td>
+        {% endfor %}
+      </tr>
+      </tbody>
+      </table>
+      </div>
+    </div>
+
+
+
+
+
+
+
+  </body>
+</html>
